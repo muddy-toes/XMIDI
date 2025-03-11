@@ -29,6 +29,16 @@
       "type": "updateVariable",
       "value": "0",
       "variable": "strokeMin"
+    },
+    {
+      "type": "updateVariable",
+      "value": "0",
+      "variable": "strokeMinSet"
+    },
+    {
+      "type": "updateVariable",
+      "value": "0",
+      "variable": "strokeMinAdj"
     }
   ],
   "finalActions": [],
@@ -240,84 +250,6 @@
     },
     {
       "type": "componentState",
-      "event": "on",
-      "actions": [
-        {
-          "part": "general",
-          "text": "Stroke Min to {strokeLow}.  Move slider to zero within 3 seconds or get thrusted.",
-          "type": "updateScript",
-          "action": "setText"
-        },
-        {
-          "part": "timer",
-          "type": "updateScript",
-          "seconds": "3",
-          "goToPage": null,
-          "variable": "strokeMin",
-          "setVariable": true,
-          "blockActions": false,
-          "variableValue": "{strokeLow}",
-          "stopOnStepChange": false
-        }
-      ],
-      "channel": "midi-a",
-      "midiKey": "40",
-      "midiType": "key"
-    },
-    {
-      "type": "componentState",
-      "event": "on",
-      "actions": [
-        {
-          "type": "updateVariable",
-          "value": "0",
-          "variable": "strokeMin"
-        },
-        {
-          "part": "general",
-          "text": "Stroke Min 0",
-          "type": "updateScript",
-          "action": "setText"
-        }
-      ],
-      "channel": "midi-a",
-      "midiKey": "41",
-      "midiType": "key"
-    },
-    {
-      "type": "componentState",
-      "event": "on",
-      "actions": [
-        {
-          "mode": "position",
-          "type": "updateComponent",
-          "action": "setPattern",
-          "channel": "part-linear-actuator-position-a",
-          "patternAction": "pause"
-        }
-      ],
-      "channel": "midi-a",
-      "midiKey": "43",
-      "midiType": "key"
-    },
-    {
-      "type": "componentState",
-      "event": "on",
-      "actions": [
-        {
-          "mode": "position",
-          "type": "updateComponent",
-          "action": "setPattern",
-          "channel": "part-linear-actuator-position-a",
-          "patternAction": "resume"
-        }
-      ],
-      "channel": "midi-a",
-      "midiKey": "45",
-      "midiType": "key"
-    },
-    {
-      "type": "componentState",
       "event": "any",
       "actions": [
         {
@@ -376,6 +308,69 @@
       "channel": "midi-a",
       "midiType": "control",
       "midiControl": "11"
+    },
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "{strokeLow}",
+          "variable": "strokeMinSet"
+        },
+        {
+          "part": "general",
+          "text": "Stroke Min to {strokeLow}.",
+          "type": "updateScript",
+          "action": "setText"
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "40",
+      "midiType": "key"
+    },
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "0",
+          "variable": "strokeMinSet"
+        },
+        {
+          "part": "general",
+          "text": "Stroke Min to 0",
+          "type": "updateScript",
+          "action": "setText"
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "41",
+      "midiType": "key"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "({strokeMinSet} > {strokeMin}) ? 1 : -1",
+          "variable": "strokeMinAdj"
+        },
+        {
+          "part": "general",
+          "text": "adj to {strokeMinAdj}",
+          "type": "updateScript",
+          "action": "setText"
+        },
+        {
+          "job": "EaseIn",
+          "type": "updateJob",
+          "action": "start",
+          "restart": true
+        }
+      ],
+      "variable": "strokeMinSet"
     },
     {
       "type": "variableChange",
@@ -508,6 +503,41 @@
       "steps": {
         "START": {
           "actions": []
+        }
+      }
+    },
+    "EaseIn": {
+      "steps": {
+        "START": {
+          "actions": [
+            {
+              "type": "updateVariable",
+              "value": "{strokeMin} + {strokeMinAdj}",
+              "variable": "strokeMin",
+              "requiredExpression": ""
+            },
+            {
+              "part": "general",
+              "text": "Min at {strokeMin}, adj {strokeMinAdj}, goal {strokeMinSet}",
+              "type": "updateScript",
+              "action": "setText"
+            }
+          ],
+          "triggers": [
+            {
+              "type": "stepState",
+              "event": "timer",
+              "amount": "0.1",
+              "actions": [
+                {
+                  "job": "EaseIn",
+                  "type": "updateJob",
+                  "action": "restartStep"
+                }
+              ],
+              "requiredExpression": "({strokeMinAdj} == 1 and {strokeMin} < {strokeMinSet}) or ({strokeMinAdj} == -1 and {strokeMin} > {strokeMinSet})"
+            }
+          ]
         }
       }
     }
