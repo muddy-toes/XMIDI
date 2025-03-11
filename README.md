@@ -1,4 +1,13 @@
 
+midi-over-usb control box to interface with xtoys for controlling an ossm running the xtoys v2 firmware
+
+# Parts:
+- 6x 12mm momentary push buttons
+- 1x rotary encoder
+- 2x 75mm slider potentiometers, B10K, B103
+
+# Wiring notes:
+
 Button - speed mode - pin 2 - key 36
 Button - position mode - pin 3 - key 37
 Button - Pause - pin 4 - key 38
