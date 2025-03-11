@@ -1,0 +1,534 @@
+{
+  "initialActions": [
+    {
+      "job": "Main",
+      "type": "updateJob",
+      "action": "start"
+    },
+    {
+      "type": "updateVariable",
+      "value": "0",
+      "variable": "pause"
+    },
+    {
+      "type": "updateVariable",
+      "value": "0",
+      "variable": "mode"
+    },
+    {
+      "type": "updateVariable",
+      "value": "0",
+      "variable": "strokeLow"
+    },
+    {
+      "type": "updateVariable",
+      "value": "20",
+      "variable": "strokeRange"
+    },
+    {
+      "type": "updateVariable",
+      "value": "0",
+      "variable": "strokeMin"
+    }
+  ],
+  "finalActions": [],
+  "globalTriggers": [
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "0",
+          "variable": "mode"
+        },
+        {
+          "mode": "speed",
+          "type": "updateComponent",
+          "action": "setVolume",
+          "channel": "part-linear-actuator-position-a",
+          "rampTime": 0,
+          "percentVolume": "{speed}"
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "36",
+      "midiType": "key",
+      "midiChannel": "1"
+    },
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "1",
+          "variable": "mode"
+        },
+        {
+          "mode": "position",
+          "type": "updateComponent",
+          "action": "setStrokeLength",
+          "channel": "part-linear-actuator-position-a",
+          "maximum": "{strokeMin} + {strokeLow} + {strokeRange}",
+          "minimum": "{strokeMin} + {strokeLow}"
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "37",
+      "midiType": "key"
+    },
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "part": "general",
+          "text": "K38",
+          "type": "updateScript",
+          "action": "setText"
+        },
+        {
+          "code": "pausePressed(mode, pause)",
+          "type": "customCode",
+          "resultVar": "action",
+          "variables": [
+            {
+              "name": "mode",
+              "value": "mode",
+              "expression": null
+            },
+            {
+              "name": "pause",
+              "value": "pause",
+              "expression": null
+            }
+          ]
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "38",
+      "midiType": "key"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "part": "general",
+          "text": "P1",
+          "type": "updateScript",
+          "action": "setText"
+        },
+        {
+          "mode": "speed",
+          "type": "updateComponent",
+          "action": "setPattern",
+          "channel": "part-linear-actuator-position-a",
+          "patternAction": "pause",
+          "requiredExpression": ""
+        }
+      ],
+      "variable": "action",
+      "requiredExpression": "{action} == 'pause0'"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "part": "general",
+          "text": "P2",
+          "type": "updateScript",
+          "action": "setText"
+        },
+        {
+          "mode": "speed",
+          "type": "updateComponent",
+          "action": "setPattern",
+          "channel": "part-linear-actuator-position-a",
+          "patternAction": "resume",
+          "requiredExpression": ""
+        }
+      ],
+      "variable": "action",
+      "requiredExpression": "{action} == 'resume0'"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "part": "general",
+          "text": "P3",
+          "type": "updateScript",
+          "action": "setText"
+        },
+        {
+          "mode": "position",
+          "type": "updateComponent",
+          "action": "setPattern",
+          "channel": "part-linear-actuator-position-a",
+          "patternAction": "pause",
+          "requiredExpression": ""
+        }
+      ],
+      "variable": "action",
+      "requiredExpression": "{action} == 'pause1'"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "part": "general",
+          "text": "P4",
+          "type": "updateScript",
+          "action": "setText"
+        },
+        {
+          "mode": "position",
+          "type": "updateComponent",
+          "action": "setPattern",
+          "channel": "part-linear-actuator-position-a",
+          "patternAction": "resume",
+          "requiredExpression": ""
+        }
+      ],
+      "variable": "action",
+      "requiredExpression": "{action} == 'resume1'"
+    },
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "mode": "speed",
+          "type": "updateComponent",
+          "action": "setPattern",
+          "channel": "part-linear-actuator-position-a",
+          "pattern": {
+            "id": "off",
+            "name": "Off",
+            "custom": "Off",
+            "channels": 1,
+            "patternData": {
+              "custom": "off"
+            }
+          },
+          "restart": true,
+          "patternAction": "specific",
+          "patternControls": {
+            "id": "off"
+          }
+        },
+        {
+          "type": "updateVariable",
+          "value": "0",
+          "variable": "strokeLow"
+        },
+        {
+          "type": "updateVariable",
+          "value": "10",
+          "variable": "strokeRange"
+        },
+        {
+          "type": "updateVariable",
+          "value": "0",
+          "variable": "speed"
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "39",
+      "midiType": "key"
+    },
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "part": "general",
+          "text": "Stroke Min to {strokeLow}.  Move slider to zero within 3 seconds or get thrusted.",
+          "type": "updateScript",
+          "action": "setText"
+        },
+        {
+          "part": "timer",
+          "type": "updateScript",
+          "seconds": "3",
+          "goToPage": null,
+          "variable": "strokeMin",
+          "setVariable": true,
+          "blockActions": false,
+          "variableValue": "{strokeLow}",
+          "stopOnStepChange": false
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "40",
+      "midiType": "key"
+    },
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "0",
+          "variable": "strokeMin"
+        },
+        {
+          "part": "general",
+          "text": "Stroke Min 0",
+          "type": "updateScript",
+          "action": "setText"
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "41",
+      "midiType": "key"
+    },
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "mode": "position",
+          "type": "updateComponent",
+          "action": "setPattern",
+          "channel": "part-linear-actuator-position-a",
+          "patternAction": "pause"
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "43",
+      "midiType": "key"
+    },
+    {
+      "type": "componentState",
+      "event": "on",
+      "actions": [
+        {
+          "mode": "position",
+          "type": "updateComponent",
+          "action": "setPattern",
+          "channel": "part-linear-actuator-position-a",
+          "patternAction": "resume"
+        }
+      ],
+      "channel": "midi-a",
+      "midiKey": "45",
+      "midiType": "key"
+    },
+    {
+      "type": "componentState",
+      "event": "any",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "{trigger-value}",
+          "variable": "strokeLow"
+        },
+        {
+          "part": "general",
+          "text": "Stroke Low {strokeMin}",
+          "type": "updateScript",
+          "action": "setText"
+        }
+      ],
+      "channel": "midi-a",
+      "midiType": "control",
+      "midiControl": "1"
+    },
+    {
+      "type": "componentState",
+      "event": "any",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "{trigger-value}",
+          "variable": "strokeRange"
+        },
+        {
+          "part": "general",
+          "text": "Stroke Range {strokeRange}",
+          "type": "updateScript",
+          "action": "setText"
+        }
+      ],
+      "channel": "midi-a",
+      "midiType": "control",
+      "midiControl": "2"
+    },
+    {
+      "type": "componentState",
+      "event": "any",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "{trigger-value}",
+          "variable": "speed",
+          "requiredExpression": ""
+        },
+        {
+          "part": "general",
+          "text": "Speed {speed}",
+          "type": "updateScript",
+          "action": "setText"
+        }
+      ],
+      "channel": "midi-a",
+      "midiType": "control",
+      "midiControl": "11"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "(100 - {strokeMin}) * ({strokeLow} / 100) + {strokeMin}",
+          "variable": "intStrokeMin"
+        },
+        {
+          "type": "updateVariable",
+          "value": "(100 - {strokeMin}) * ({strokeRange} / 100) + {strokeMin}",
+          "variable": "intStrokeMax"
+        }
+      ],
+      "variable": "strokeMin"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "(100 - {strokeMin}) * ({strokeLow} / 100) + {strokeMin}",
+          "variable": "intStrokeMin"
+        },
+        {
+          "type": "updateVariable",
+          "value": "(100 - {strokeMin}) * ({strokeRange} / 100) + {strokeMin}",
+          "variable": "intStrokeMax"
+        }
+      ],
+      "variable": "strokeLow"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "type": "updateVariable",
+          "value": "(100 - {strokeMin}) * ({strokeLow} / 100) + {strokeMin}",
+          "variable": "intStrokeMin"
+        },
+        {
+          "type": "updateVariable",
+          "value": "(100 - {strokeMin}) * ({strokeRange} / 100) + {strokeMin}",
+          "variable": "intStrokeMax"
+        }
+      ],
+      "variable": "strokeRange"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "mode": "speed",
+          "type": "updateComponent",
+          "action": "setStrokeLength",
+          "channel": "part-linear-actuator-position-a",
+          "maximum": "{intStrokeMax}",
+          "minimum": "{intStrokeMin}",
+          "requiredExpression": "{mode} == 0"
+        },
+        {
+          "mode": "position",
+          "type": "updateComponent",
+          "action": "setStrokeLength",
+          "channel": "part-linear-actuator-position-a",
+          "maximum": "{intStrokeMax}",
+          "minimum": "{intStrokeMin}",
+          "requiredExpression": "{mode} == 1"
+        },
+        {
+          "type": "updateComponent",
+          "action": "setVolume",
+          "channel": "generic-1-a",
+          "rampTime": 0,
+          "percentVolume": "{trigger-value}"
+        }
+      ],
+      "variable": "intStrokeMin"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "mode": "speed",
+          "type": "updateComponent",
+          "action": "setStrokeLength",
+          "channel": "part-linear-actuator-position-a",
+          "maximum": "{intStrokeMax}",
+          "minimum": "{intStrokeMin}",
+          "requiredExpression": "{mode} == 0"
+        },
+        {
+          "mode": "position",
+          "type": "updateComponent",
+          "action": "setStrokeLength",
+          "channel": "part-linear-actuator-position-a",
+          "maximum": "{intStrokeMax}",
+          "minimum": "{intStrokeMin}",
+          "requiredExpression": "{mode} == 1"
+        },
+        {
+          "type": "updateComponent",
+          "action": "setVolume",
+          "channel": "generic-1-a",
+          "rampTime": 0,
+          "percentVolume": "{trigger-value}"
+        }
+      ],
+      "variable": "intStrokeMax"
+    },
+    {
+      "type": "variableChange",
+      "actions": [
+        {
+          "mode": "speed",
+          "type": "updateComponent",
+          "action": "setVolume",
+          "channel": "part-linear-actuator-position-a",
+          "rampTime": 0,
+          "percentVolume": "{speed}",
+          "requiredExpression": "{mode} == 0"
+        }
+      ],
+      "variable": "speed"
+    }
+  ],
+  "jobs": {
+    "Main": {
+      "steps": {
+        "START": {
+          "actions": []
+        }
+      }
+    }
+  },
+  "queues": [],
+  "channels": {
+    "midi-a": {
+      "name": null,
+      "type": "midi"
+    },
+    "part-linear-actuator-position-a": {
+      "name": null,
+      "type": "part-linear-actuator-position"
+    }
+  },
+  "controls": [],
+  "controlPresets": [],
+  "media": {
+    "audio": {},
+    "voices": {},
+    "patterns": {}
+  },
+  "customFunctions": "function pausePressed() {\n    var mode = getVariable('mode');\n    var pause = getVariable('pause');\n    if( pause == 0 ) {\n      setVariable('pause', 1);\n      return 'pause' + mode;\n    } else {\n      setVariable('pause', 0);\n      return 'resume' + mode;\n    }\n}"
+}
