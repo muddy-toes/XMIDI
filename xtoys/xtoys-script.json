@@ -93,12 +93,6 @@
       "event": "on",
       "actions": [
         {
-          "part": "general",
-          "text": "K38",
-          "type": "updateScript",
-          "action": "setText"
-        },
-        {
           "code": "pausePressed(mode, pause)",
           "type": "customCode",
           "resultVar": "action",
@@ -125,7 +119,7 @@
       "actions": [
         {
           "part": "general",
-          "text": "P1",
+          "text": "Pause",
           "type": "updateScript",
           "action": "setText"
         },
@@ -146,7 +140,7 @@
       "actions": [
         {
           "part": "general",
-          "text": "P2",
+          "text": "Resume",
           "type": "updateScript",
           "action": "setText"
         },
@@ -167,7 +161,7 @@
       "actions": [
         {
           "part": "general",
-          "text": "P3",
+          "text": "Pause",
           "type": "updateScript",
           "action": "setText"
         },
@@ -188,7 +182,7 @@
       "actions": [
         {
           "part": "general",
-          "text": "P4",
+          "text": "Resume",
           "type": "updateScript",
           "action": "setText"
         },
