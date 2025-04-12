@@ -49,19 +49,19 @@ byte cc = 1; //* Lowest MIDI CC to be used
 byte encoderBaseOffset = 10;
 
 void noteOn(byte channel, byte pitch, byte velocity) {
-  midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
+  midiEventPacket_t noteOn = {0x09, (byte)(0x90 | channel), pitch, velocity};
   MidiUSB.sendMIDI(noteOn);
   MidiUSB.flush();
 }
 
 void noteOff(byte channel, byte pitch, byte velocity) {
-  midiEventPacket_t noteOff = {0x08, 0x80 | channel, pitch, velocity};
+  midiEventPacket_t noteOff = {0x08, (byte)(0x80 | channel), pitch, velocity};
   MidiUSB.sendMIDI(noteOff);
   MidiUSB.flush();
 }
 
 void controlChange(byte channel, byte control, byte value) {
-  midiEventPacket_t event = {0x0B, 0xB0 | channel, control, value};
+  midiEventPacket_t event = {0x0B, (byte)(0xB0 | channel), control, value};
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
 }
@@ -77,7 +77,7 @@ void setup() {
 void loop() {
 
   // Buttons
-  for( int i = 0; i < NButtons; i++ ) {
+  for( byte i = 0; i < NButtons; i++ ) {
     buttonCState[i] = digitalRead(buttonPin[i]);  // read pins from arduino
 
     if( (millis() - lastDebounceTime[i]) > debounceDelay ) {
@@ -102,7 +102,7 @@ void loop() {
   }
 
   // Encoders
-  for( int i = 0; i < NEncoders; i++ ) {
+  for( byte i = 0; i < NEncoders; i++ ) {
     encoderCState[i] = digitalRead(encoderPinA[i]);
     if( encoderCState[i] != encoderPState[i] ) {
       if( digitalRead(encoderPinB[i]) != encoderCState[i] )
@@ -115,14 +115,14 @@ void loop() {
       else if( encoderVal[i] < 0 )
         encoderVal[i] = 0;
 
-      controlChange(midiCh, encoderBaseOffset + cc + i, encoderVal[i]);
+      controlChange(midiCh, encoderBaseOffset + cc + i, encoderVal[i] < 3 ? 0 : encoderVal[i]);
 
     encoderPState[i] = encoderCState[i];
     }
   }
 
   // Pots
-  for( int i = 0; i < NPots; i++ ) {
+  for( byte i = 0; i < NPots; i++ ) {
     potCState[i] = analogRead(potPin[i]);
     midiCState[i] = map(potCState[i], 0, 1023, potMin[i], potMax[i]); // Maps the reading of the potCState to a value usable in midi
     potVar = abs(potCState[i] - potPState[i]); // Calculates the absolute value between the difference between the current and previous state of the pot
