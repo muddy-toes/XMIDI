@@ -1,6 +1,8 @@
 
 midi-over-usb control box to interface with xtoys for controlling an ossm running the xtoys v2 firmware
 
+Pics in doc/
+
 # Components:
 
   - Arduino Pro Micro 5V
@@ -8,9 +10,12 @@ midi-over-usb control box to interface with xtoys for controlling an ossm runnin
   - 1x rotary encoder
   - 2x 75mm slider potentiometers, B10K, B103
 
+Component reference info in doc/
+
 # Parts:
 
 STL files are in the printables/ directory
+
 
 # Wiring notes:
 
@@ -26,3 +31,8 @@ Encoder - Speed - pins 14 & 15
 
 Slider - Stroke min - pin A9
 Slider - Stroke range - pin A8
+
+All components buttons are connected between the given pin and gnd
+
+The sliders are 10k B pots between gnd and 5V
+
