@@ -55,6 +55,26 @@
         {
           "mode": "speed",
           "type": "updateComponent",
+          "action": "setPattern",
+          "channel": "part-linear-actuator-position-a",
+          "pattern": {
+            "id": "on",
+            "name": "No Pattern",
+            "custom": "On",
+            "channels": 1,
+            "patternData": {
+              "custom": "on"
+            }
+          },
+          "restart": true,
+          "patternAction": "specific",
+          "patternControls": {
+            "id": "on"
+          }
+        },
+        {
+          "mode": "speed",
+          "type": "updateComponent",
           "action": "setVolume",
           "channel": "part-linear-actuator-position-a",
           "rampTime": 0,
@@ -64,7 +84,7 @@
       "channel": "midi-a",
       "midiKey": "36",
       "midiType": "key",
-      "midiChannel": "1"
+      "midiChannel": ""
     },
     {
       "type": "componentState",
